@@ -163,7 +163,9 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 /* ────────────────────────────────────────────────────────────────
    6. ADD TO CALENDAR
    Generates a standard .ics file and triggers browser download.
-   Church ceremony only, for now.
+   Church button exists on both pages. The reception button only
+   exists in family.html, so its listener simply never attaches
+   on index.html (the church-only, general-audience page).
 ──────────────────────────────────────────────────────────────── */
 function downloadICS({ start, end, summary, location, description, filename }) {
   const ics = [
@@ -198,6 +200,21 @@ if (calBtnChurch) {
       location: 'St. Mark the Apostle Church\\, Cleopatra',
       description: 'Wedding ceremony of David & Sandy.',
       filename: 'david-sandy-church.ics'
+    });
+  });
+}
+
+const calBtnReception = document.getElementById('add-cal-btn-reception');
+if (calBtnReception) {
+  calBtnReception.addEventListener('click', e => {
+    e.preventDefault();
+    downloadICS({
+      start: '20260903T200000',
+      end: '20260904T000000',
+      summary: 'David & Sandy — Wedding Reception',
+      location: 'Le Méridien Cairo Airport',
+      description: 'Wedding reception of David & Sandy.',
+      filename: 'david-sandy-reception.ics'
     });
   });
 }

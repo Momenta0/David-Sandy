@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>David & Sandy — Wedding Invitation</title>
+
+  <!-- ═══════════════════════════════════════════════
+       GOOGLE FONTS (free, loaded from CDN)
+       - Allura          → script headings (section titles)
+       - Great Vibes      → couple's name (English only)
+       - Playfair Display → elegant serif (dates, times)
+       - Jost             → clean sans (labels, buttons)
+       - Tajawal          → Arabic body font
+  ════════════════════════════════════════════════ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Allura&family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=Jost:wght@300;400;500&family=Tajawal:wght@300;400;500&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Project stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════════
+       1. ENVELOPE SCREEN
+       Full-screen overlay on first load.
+       Tap anywhere → flap animation → fades out → music starts.
+  ═══════════════════════════════════════════════ -->
+  <div id="envelope-screen">
+
+    <div class="envelope-wrap" id="env-wrap">
+      <div class="envelope-body">
+        <div class="env-left"></div>
+        <div class="env-right"></div>
+        <div class="env-bottom"></div>
+        <div class="env-flap"></div>
+        <!-- Gold wax seal with groom's initial -->
+        <div class="env-seal">D</div>
+      </div>
+    </div>
+
+    <div class="env-names">David &amp; Sandy</div>
+    <!-- Pulsing tap-to-open hint — text swapped by JS on lang toggle -->
+    <p class="env-tap" id="env-tap-text">Tap to open</p>
+
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════
+       2. LANGUAGE TOGGLE BUTTON
+       Single button — shows the OTHER language as label.
+       Fixed position, flips side in RTL mode.
+  ═══════════════════════════════════════════════ -->
+  <button id="lang-btn" onclick="toggleLang()">عربي</button>
+
+  <!-- ══════════════════════════════════════════════
+       2b. MUSIC MUTE TOGGLE
+       🔧 Replace song.mp3 below with the real song file.
+  ═══════════════════════════════════════════════ -->
+  <button id="music-btn" onclick="toggleMusic()">🔇</button>
+  <audio id="bg-music" src="song.mp3" loop preload="none"></audio>
+
+
+  <!-- ══════════════════════════════════════════════
+       3. HERO SECTION
+       Full-viewport background with names + date + CTA.
+       🔧 Replace hero-bg.svg (in style.css) with the real cover photo.
+  ═══════════════════════════════════════════════ -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+
+    <div class="hero-content">
+      <p class="hero-subtitle"
+         data-en="WE'RE GETTING MARRIED"
+         data-ar="نحتفل بزفافنا">WE'RE GETTING MARRIED</p>
+
+      <h1 class="hero-name" data-en="David" data-ar="ديفيد">David</h1>
+      <p class="hero-amp">&amp;</p>
+      <h1 class="hero-name" data-en="Sandy" data-ar="ساندي">Sandy</h1>
+
+      <p class="hero-date"
+         data-en="September 3, 2026"
+         data-ar="٣ سبتمبر ٢٠٢٦">September 3, 2026</p>
+      <p class="hero-time"
+         data-en="Thursday · 6:00 PM"
+         data-ar="الخميس · ٦:٠٠ مساءً">Thursday · 6:00 PM</p>
+
+      <!-- CTA scrolls directly to the inline RSVP form -->
+      <a href="#rsvp-section" class="hero-cta"
+         data-en="Confirm Your Attendance"
+         data-ar="تأكيد الحضور">Confirm Your Attendance</a>
+    </div>
+
+    <!-- Animated scroll indicator -->
+    <div class="scroll-hint">
+      <span></span>
+      <p>scroll</p>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════
+       4. COUNTDOWN SECTION
+       Live JS countdown to the church ceremony.
+  ═══════════════════════════════════════════════ -->
+  <div id="countdown">
+    <div class="countdown-inner">
+
+      <h2 class="section-title reveal"
+          data-en="Countdown"
+          data-ar="العد التنازلي">Countdown</h2>
+      <p class="section-sub reveal"
+         data-en="To our wedding"
+         data-ar="حتى زفافنا">To Our Wedding</p>
+
+      <div class="countdown-row reveal">
+
+        <div class="cd-item">
+          <span class="cd-num" id="cd-days">--</span>
+          <span class="cd-label" data-en="DAYS" data-ar="أيام">DAYS</span>
+        </div>
+
+        <div class="cd-item">
+          <span class="cd-num" id="cd-hours">--</span>
+          <span class="cd-label" data-en="HOURS" data-ar="ساعات">HOURS</span>
+        </div>
+
+        <div class="cd-item">
+          <span class="cd-num" id="cd-mins">--</span>
+          <span class="cd-label" data-en="MINS" data-ar="دقائق">MINS</span>
+        </div>
+
+        <div class="cd-item">
+          <span class="cd-num" id="cd-secs">--</span>
+          <span class="cd-label" data-en="SECS" data-ar="ثواني">SECS</span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════
+       5. LOVE QUOTE SECTION
+  ═══════════════════════════════════════════════ -->
+  <section id="love-quote">
+    <div class="love-quote-inner reveal">
+      <div class="love-quote-mark">"</div>
+      <p class="love-quote-text"
+         data-en="The true joy of life comes from sharing special moments with the people who matter most. As we prepare to take this meaningful step into marriage, we reflect on the love and guidance of the family and friends who have shaped our lives. We would be honored to have you by our side as we promise to love, cherish, and support one another forever."
+         data-ar="إن الفرحة الحقيقية في الحياة تكمن في مشاركة اللحظات المميزة مع أعز الناس إلى قلوبنا. وبينما نستعد لخطو هذه الخطوة المهمة نحو الزواج، نستذكر بكل حب وامتنان عائلتنا وأصدقاءنا الذين كان لهم بالغ الأثر في تكويننا. يشرفنا أن تكونوا بجانبنا ونحن نعد بأن نحب ونعتني ببعضنا البعض ونسند أحدنا الآخر إلى الأبد.
+">
+        The true joy of life comes from sharing special moments with the people who matter most. As we prepare to take this meaningful step into marriage, we reflect on the love and guidance of the family and friends who have shaped our lives. We would be honored to have you by our side as we promise to love, cherish, and support one another forever.
+      </p>
+      <div class="love-quote-names">— David &amp; Sandy</div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════
+       6. GALLERY SECTION
+       Infinite image carousel — fixed-size cards, pure CSS, no JS.
+       🔧 Photos are numbered 1.jpeg, 2.jpeg, 3.jpeg... Add/remove
+       an <img> tag to each of the TWO identical blocks below (keep
+       them in sync) — the duplicate set is what makes the loop
+       seamless. Drop the numbered files in this same folder.
+  ═══════════════════════════════════════════════ -->
+  <div id="gallery">
+    <div class="gallery-inner">
+      <h2 class="section-title reveal"
+          data-en="Our Moments"
+          data-ar="لحظاتنا">Our Moments</h2>
+      <p class="section-sub reveal"
+         data-en="Sharing our memories together with you"
+         data-ar="نشارككم بعضًا من أجمل ذكرياتنا معكم">Sharing our memories together with you</p>
+    </div>
+
+    <div class="gallery-marquee reveal">
+      <div class="gallery-track">
+        <img src="1.jpeg" alt="David & Sandy" width="240" height="300" />
+        <img src="2.jpeg" alt="David & Sandy" width="240" height="300" />
+        <img src="3.jpeg" alt="David & Sandy" width="240" height="300" />
+        <img src="4.jpeg" alt="David & Sandy" width="240" height="300" />
+        <img src="5.jpeg" alt="David & Sandy" width="240" height="300" />
+        <img src="6.jpeg" alt="David & Sandy" width="240" height="300" />
+        <img src="7.jpeg" alt="David & Sandy" width="240" height="300" />
+        <img src="8.jpeg" alt="David & Sandy" width="240" height="300" />
+        <img src="9.jpeg" alt="David & Sandy" width="240" height="300" />
+        <!-- duplicate set — required for the seamless loop, keep identical to the set above -->
+        <img src="1.jpeg" alt="" width="240" height="300" aria-hidden="true" />
+        <img src="2.jpeg" alt="" width="240" height="300" aria-hidden="true" />
+        <img src="3.jpeg" alt="" width="240" height="300" aria-hidden="true" />
+        <img src="4.jpeg" alt="" width="240" height="300" aria-hidden="true" />
+        <img src="5.jpeg" alt="" width="240" height="300" aria-hidden="true" />
+        <img src="6.jpeg" alt="" width="240" height="300" aria-hidden="true" />
+        <img src="7.jpeg" alt="" width="240" height="300" aria-hidden="true" />
+        <img src="8.jpeg" alt="" width="240" height="300" aria-hidden="true" />
+        <img src="9.jpeg" alt="" width="240" height="300" aria-hidden="true" />
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════
+       7. DAY DETAILS SECTION
+       Two stops: Church ceremony, then the reception (Le Méridien Cairo Airport).
+       🔧 This is the "family/close friends" version of the invitation —
+       index.html (the general link) only has the church.
+  ═══════════════════════════════════════════════ -->
+  <div id="details">
+    <div class="details-inner">
+
+      <h2 class="section-title reveal"
+          data-en="Day Details"
+          data-ar="تفاصيل اليوم">Day Details</h2>
+      <p class="section-sub reveal"
+         data-en="Everything you need to know"
+         data-ar="كل ما تحتاج معرفته">Everything you need to know</p>
+      <div class="ornament reveal">✦ ✦ ✦</div>
+
+      <!-- Stop 1: Church ceremony -->
+      <div class="venue-block reveal">
+        <p class="venue-tag"
+           data-en="Ceremony"
+           data-ar="مراسم الزفاف">Ceremony</p>
+        <p class="venue-name"
+           data-en="St. Mark the Apostle Church, Cleopatra"
+           data-ar="كنيسة مارمرقس الرسول - كيلوباترا">St. Mark the Apostle Church, Cleopatra</p>
+        <p class="venue-time"
+           data-en="⏱ Thursday, Sep 3 · 6:00 PM"
+           data-ar="⏱ الخميس ٣ سبتمبر · ٦:٠٠ مساءً">⏱ Thursday, Sep 3 · 6:00 PM</p>
+
+        <div class="map-box">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3452.0627556552363!2d31.329659799999998!3d30.092389000000004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1458158a9a0d791f%3A0x7529fe67e633be7c!2sSt.%20Mark%20Coptic%20Orthodox%20Church%20Cleopatra!5e0!3m2!1sen!2seg!4v1786902817529!5m2!1sen!2seg" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        </div>
+
+        <div class="details-btns">
+          <a href="https://www.google.com/maps/place/St.+Mark+Coptic+Orthodox+Church+Cleopatra/@30.092389,31.3296598,17z/data=!3m1!4b1!4m6!3m5!1s0x1458158a9a0d791f:0x7529fe67e633be7c!8m2!3d30.092389!4d31.3296598!16s%2Fm%2F04jlrh4!18m1!1e1?entry=ttu&g_ep=EgoyMDI2MDgxMi4wIKXMDSoASAFQAw%3D%3D"
+             target="_blank" class="btn-outline"
+             data-en="📍 Open in Maps"
+             data-ar="📍 افتح في الخرائط">📍 Open in Maps</a>
+
+          <a href="#" id="add-cal-btn-church" class="btn-outline"
+             data-en="📅 Add to Calendar"
+             data-ar="📅 أضف للتقويم">📅 Add to Calendar</a>
+        </div>
+      </div>
+
+      <!-- Stop 2: Next destination — Le Méridien Cairo Airport -->
+      <!-- 🔧 TODO: confirm start time — placeholder is 8:00 PM to match the ceremony's usual gap -->
+      <div class="venue-block reveal">
+        <p class="venue-tag"
+           data-en="Next Destination"
+           data-ar="الوجهة التالية">Next Destination</p>
+        <p class="venue-name">Le Méridien Cairo Airport</p>
+        <p class="venue-time"
+           data-en="⏱ From 8:00 PM"
+           data-ar="⏱ من ٨:٠٠ مساءً">⏱ From 8:00 PM</p>
+
+        <div class="map-box">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3451.3169529673273!2d31.395847200000006!3d30.1137427!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14581655c2fefa93%3A0x855d24c50d9a251!2sLe%20M%C3%A9ridien%20Cairo%20Airport!5e0!3m2!1sen!2seg!4v1786961889591!5m2!1sen!2seg" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        </div>
+
+        <div class="details-btns">
+          <a href="https://www.google.com/maps/place/Le+M%C3%A9ridien+Cairo+Airport/@30.1137427,31.3958472,17z/data=!3m1!4b1!4m9!3m8!1s0x14581655c2fefa93:0x855d24c50d9a251!5m2!4m1!1i2!8m2!3d30.1137427!4d31.3958472!16s%2Fg%2F1pp2x8w3l!18m1!1e1?entry=ttu&g_ep=EgoyMDI2MDgxMi4wIKXMDSoASAFQAw%3D%3D"
+             target="_blank" class="btn-outline"
+             data-en="📍 Open in Maps"
+             data-ar="📍 افتح في الخرائط">📍 Open in Maps</a>
+
+          <a href="#" id="add-cal-btn-reception" class="btn-outline"
+             data-en="📅 Add to Calendar"
+             data-ar="📅 أضف للتقويم">📅 Add to Calendar</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════
+       8. RSVP FORM SECTION  (inline — same page)
+       Fields: name · attend toggle · message · signature canvas
+       On submit → hides form, shows success message.
+  ═══════════════════════════════════════════════ -->
+  <section id="rsvp-section">
+    <div class="rsvp-card reveal">
+
+      <!-- FORM STATE (visible by default) -->
+      <div id="rsvp-form-content">
+
+        <h2 class="section-title"
+            data-en="Confirm your attendance"
+            data-ar="تأكيد حضورك">Confirm your attendance</h2>
+        <p class="section-sub"
+           data-en="Your presence means the world to us"
+           data-ar="وجودكم يعني لنا الكثير">Your presence means the world to us</p>
+        <div class="ornament" style="margin-bottom:28px">✦ ✦ ✦</div>
+
+        <!-- Field: Full name (required) -->
+        <div class="field-group">
+          <label class="field-label"
+                 data-en="Full Name *"
+                 data-ar="الاسم الكامل *">Full Name <span class="req">*</span></label>
+          <input type="text" id="rsvp-name" class="field-input"
+                 placeholder="Your name"
+                 data-placeholder-en="Your name"
+                 data-placeholder-ar="اسمك الكريم" />
+        </div>
+
+        <!-- Field: Will you attend? (toggle buttons) -->
+        <div class="field-group">
+          <label class="field-label"
+                 data-en="Will you attend?"
+                 data-ar="هل ستحضر؟">Will you attend?</label>
+          <div class="attend-group">
+            <button class="attend-btn" id="btn-yes" onclick="selectAttend('yes')"
+                    data-en="Yes, with pleasure 🎉"
+                    data-ar="نعم، بكل سرور 🎉">Yes, with pleasure 🎉</button>
+            <button class="attend-btn" id="btn-no" onclick="selectAttend('no')"
+                    data-en="Sorry, I won’t be able to attend 😔"
+                    data-ar="للأسف لن أتمكن من الحضور😔">Sorry, I won’t be able to attend 😔</button>
+          </div>
+        </div>
+
+        <!-- Field: Message for the couple -->
+        <div class="field-group">
+          <label class="field-label"
+                 data-en="Message for the couple"
+                 data-ar="رسالة للعروسين">Message for the couple</label>
+          <textarea id="rsvp-msg" class="field-textarea"
+                    placeholder="Write a warm message..."
+                    data-placeholder-en="Write a warm message..."
+                    data-placeholder-ar="اكتب رسالة جميلة..."></textarea>
+        </div>
+
+        <!-- Field: Signature (HTML5 canvas, draw with finger/mouse) -->
+        <div class="field-group">
+          <label class="field-label"
+                 data-en="Signature"
+                 data-ar="توقيعك">Signature</label>
+          <canvas class="sig-canvas" id="sig-canvas"></canvas>
+          <button class="sig-clear" onclick="clearSig()"
+                  data-en="Clear signature"
+                  data-ar="مسح التوقيع">Clear signature</button>
+        </div>
+
+        <!-- Submit -->
+        <button class="btn-primary" onclick="submitRSVP()"
+                data-en="SEND CONFIRMATION"
+                data-ar="إرسال التأكيد">SEND CONFIRMATION</button>
+
+      </div>
+      <!-- END FORM STATE -->
+
+      <!-- SUCCESS STATE (hidden, shown after submit) -->
+      <div id="rsvp-success">
+        <div class="success-icon">💌</div>
+        <h3 data-en="Thank you!" data-ar="شكراً لك!">Thank you!</h3>
+        <p data-en="Your response has been recorded. We can't wait to celebrate with you on our special day!"
+           data-ar="تم تسجيل ردك. لا يسعنا الانتظار للاحتفال معك في يومنا المميز!">
+           Your response has been recorded. We can't wait to celebrate with you on our special day!</p>
+      </div>
+      <!-- END SUCCESS STATE -->
+
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════
+       9. FOOTER
+  ═══════════════════════════════════════════════ -->
+  <footer>
+    <div class="footer-names">David &amp; Sandy</div>
+    <p class="footer-date"
+       data-en="September 3, 2026"
+       data-ar="٣ سبتمبر ٢٠٢٦">September 3, 2026</p>
+    <p class="footer-made">
+      <span data-en="Made with love · " data-ar="صُنع بكل محبة · ">Made with love · </span><a href="https://www.instagram.com/momenta.digital/" target="_blank" rel="noopener noreferrer" class="footer-momenta-link">Momenta</a>
+    </p>
+  </footer>
+
+  <!-- script-ui.js: envelope + music + lang + countdown + reveal + signature -->
+  <script src="script-ui.js"></script>
+  <!-- Firebase Compat SDK — no type="module", no CSP issues -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <!-- ════════════════════════════════════════════════════════
+       EVENT CONFIGURATION — internal use only, do not share
+       Same EVENT_ID as index.html on purpose: this page's RSVPs
+       must land in the same Firebase collection / dashboard.
+  ════════════════════════════════════════════════════════ -->
+  <script>
+    window.EVENT_ID = 'david-sandy-vdcgem'; // 🔧 must match index.html and dashboard.html
+  </script>
+  <!-- Firebase submit logic -->
+  <script src="script.js"></script>
+
+</body>
+</html>
