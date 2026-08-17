@@ -9,16 +9,17 @@
    1. CSS CUSTOM PROPERTIES (Design Tokens)
    Central place to change the whole color palette.
 ──────────────────────────────────────────────────────────────── */
+
 :root {
-  --beige:      #F2EFF0;   /* page background */
+  --beige:      #F1E9DE;   /* page background */
   --warm-white: #FCFAFB;   /* card / section backgrounds */
-  --gold:       #B3A0B0;   /* accents, ornaments (muted lilac) */
-  --gold-dark:  #8F7C8C;   /* hover states, required marks */
-  --olive:      #5A4F58;   /* headings, footer, primary button (taupe) */
+  --gold:       #8e495a;  /* accents, ornaments (muted lilac) */
+  --gold-dark:  #8e495a;  /* hover states, required marks */
+  --olive:      #5B3039;   /* headings, footer, primary button (taupe) */
   --brown:      #7A6B74;   /* unused — available for extras */
   --text:       #362F35;   /* main body text */
   --text-light: #857B82;   /* subtitles, labels, descriptions */
-  --border:     #E2DBE0;   /* all borders and dividers */
+  --border:     #CE8FA0;/* all borders and dividers */
 }
 
 
