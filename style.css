@@ -542,7 +542,7 @@ body[dir="rtl"] .love-quote-text {
 
 /* ────────────────────────────────────────────────────────────────
    9. GALLERY SECTION
-   Full-bleed, continuously sliding photo strip (pure CSS marquee).
+   Full-bleed infinite image carousel — fixed-size cards, pure CSS.
 ──────────────────────────────────────────────────────────────── */
 #gallery {
   background: var(--warm-white);
@@ -566,19 +566,21 @@ body[dir="rtl"] .love-quote-text {
   mask-image: linear-gradient(to right, transparent 0, #000 40px, #000 calc(100% - 40px), transparent 100%);
 }
 
-/* Holds two identical sets of photos back-to-back —
-   animating exactly -50% loops seamlessly forever. */
+/* Holds two identical sets of photos back-to-back.
+   --gap is a custom property so the keyframe's offset below can react
+   to it (incl. the mobile override) without redefining the keyframe. */
 .gallery-track {
+  --gap: 18px;
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: var(--gap);
   width: max-content;
-  animation: gallery-scroll 34s linear infinite;
+  animation: gallery-scroll 30s linear infinite;
 }
 
 .gallery-track img {
-  height: 260px;
-  width: auto;
+  width: 240px;
+  height: 300px;
   flex-shrink: 0;
   object-fit: cover;
   border-radius: 10px;
@@ -586,9 +588,12 @@ body[dir="rtl"] .love-quote-text {
   display: block;
 }
 
+/* -50% would land half a gap short of a true seamless loop point
+   (the boundary between the two sets includes one extra gap) —
+   subtracting half the gap corrects it exactly. */
 @keyframes gallery-scroll {
   from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+  to   { transform: translateX(calc(-50% - (var(--gap) / 2))); }
 }
 
 /* Respect reduced-motion preference */
@@ -605,8 +610,8 @@ body[dir="rtl"] .gallery-track {
 }
 
 @media (max-width: 480px) {
-  .gallery-track img { height: 170px; }
-  .gallery-track { gap: 10px; animation-duration: 26s; }
+  .gallery-track img { width: 160px; height: 200px; }
+  .gallery-track { --gap: 12px; animation-duration: 22s; }
 }
 
 
